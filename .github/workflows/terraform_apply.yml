@@ -1,0 +1,45 @@
+name: Terraform apply 
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+    inputs:
+      AWS_ACCESS_KEY_ID:
+        description: 'AWS ACCESS KEY ID'
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        description: 'AWS SECRET ACCESS KEY'
+        required: true
+      AWS_SESSION_TOKEN:
+        description: 'AWS SESSION TOKEN'
+        required: true
+jobs:
+  terraform-actions:
+    name: Workflow apply
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ github.event.inputs.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ github.event.inputs.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ github.event.inputs.AWS_SESSION_TOKEN }}
+        aws-region: ${{ secrets.AWS_REGION }}
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v1
+    - name: Terraform fmt -recursive
+      id: fmt
+      run: terraform -chdir=./terraform fmt
+      continue-on-error: true
+    - name: Terraform init 
+      run: terraform -chdir=./terraform init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_KEY }}"  
+    - name: Terraform apply AWS
+      id: apply_AWS
+      run: terraform -chdir=./terraform apply -auto-approve -no-color 
+
+    
+
+   

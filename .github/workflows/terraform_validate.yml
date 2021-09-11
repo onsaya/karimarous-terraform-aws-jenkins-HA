@@ -1,0 +1,41 @@
+name: Terraform validate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform-actions:
+    name: Workflow
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ secrets.AWS_REGION }}
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v1
+    - name: Terraform fmt 
+      id: fmt 
+      continue-on-error: true
+    - name: Verify Terraform version
+      run: terraform --version
+    - name: Terraform init 
+      run: terraform init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_Key }}"
+    - name: Terraform validation
+      run: terraform validate
+    - name: Terraform Plan AWS 
+      id: plan_AWS
+      run: terraform plan -no-color 
+
+    
+
+    
+
+   
