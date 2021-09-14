@@ -32,13 +32,13 @@ jobs:
       uses: hashicorp/setup-terraform@v1
     - name: Terraform fmt -recursive
       id: fmt
-      run: terraform -chdir=./terraform fmt
+      run: terraform  fmt
       continue-on-error: true
     - name: Terraform init 
-      run: terraform -chdir=./terraform init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_KEY }}"  
+      run: terraform  init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_KEY }}"  
     - name: Terraform apply AWS
       id: apply_AWS
-      run: terraform -chdir=./terraform apply -auto-approve -no-color 
+      run: terraform  apply -auto-approve -no-color 
 
     
 

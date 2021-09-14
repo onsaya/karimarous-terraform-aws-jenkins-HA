@@ -19,10 +19,12 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: ${{ secrets.AWS_REGION }}
+
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v1
     - name: Terraform fmt 
-      id: fmt 
+      id: fmt
+      run: terraform fmt 
       continue-on-error: true
     - name: Verify Terraform version
       run: terraform --version
@@ -33,8 +35,7 @@ jobs:
     - name: Terraform Plan AWS 
       id: plan_AWS
       run: terraform plan -no-color 
-
-    
+  
 
     
 

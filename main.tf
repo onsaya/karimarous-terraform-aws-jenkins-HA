@@ -61,16 +61,8 @@ module "asg" {
         volume_size           = 20
         volume_type           = "gp2"
       }
-      }, {
-      device_name = "/dev/sda1"
-      no_device   = 1
-      ebs = {
-        delete_on_termination = true
-        encrypted             = true
-        volume_size           = 30
-        volume_type           = "gp2"
-      }
     }
+    
   ]
 
   capacity_reservation_specification = {
@@ -86,13 +78,6 @@ module "asg" {
     cpu_credits = "standard"
   }
 
-  instance_market_options = {
-    market_type = "spot"
-    spot_options = {
-      block_duration_minutes = 60
-    }
-  }
-
   metadata_options = {
     http_endpoint               = "enabled"
     http_tokens                 = "required"
@@ -106,12 +91,6 @@ module "asg" {
       device_index          = 0
       security_groups       = ["sg-12345678"]
     },
-    {
-      delete_on_termination = true
-      description           = "eth1"
-      device_index          = 1
-      security_groups       = ["sg-12345678"]
-    }
   ]
 
   placement = {

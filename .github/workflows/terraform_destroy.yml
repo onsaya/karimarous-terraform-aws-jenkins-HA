@@ -32,9 +32,10 @@ jobs:
       uses: hashicorp/setup-terraform@v1
     - name: Terraform fmt
       id: fmt
+      run: terraform fmt
       continue-on-error: true
     - name: Terraform init 
-      run: terraform  init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_key }}"    
+      run: terraform  init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_key }}"     
     - name: Terraform destroy AWS
       id: destroy_AWS
       run: terraform destroy -auto-approve 
