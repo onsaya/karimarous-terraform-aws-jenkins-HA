@@ -3,6 +3,7 @@ resource "aws_instance" "jenkins" {
   instance_type = "t2.micro" 
   subnet_id = "subnet-0d35d5878cabd2003"
   security_groups =["sg-057f04b5dab22d588"]
+  key_name = "EC2"
   credit_specification {
     cpu_credits = "unlimited"
   }
