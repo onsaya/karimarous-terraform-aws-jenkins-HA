@@ -106,10 +106,7 @@ module "asg" {
       resource_type = "volume"
       tags          = { WhatAmI = "Volume" }
     },
-    {
-      resource_type = "spot-instances-request"
-      tags          = { WhatAmI = "SpotInstanceRequest" }
-    }
+    
   ]
 
   tags = [
