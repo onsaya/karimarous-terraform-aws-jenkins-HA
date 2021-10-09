@@ -38,7 +38,7 @@ jobs:
       run: terraform  init -backend-config "bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config "region=${{ secrets.AWS_REGION }}" -backend-config "key=${{ secrets.AWS_BUCKET_KEY }}"  
     - name: Terraform apply AWS
       id: apply_AWS
-      run: terraform  apply -auto-approve -no-color 
+      run: terraform  apply -auto-approve -no-color -var "subnet_id=${{ secrets.SUBNET_ID }}" -var "security_group_id=${{ secrets.SECURITY_GROUPS }}"
 
     
 
